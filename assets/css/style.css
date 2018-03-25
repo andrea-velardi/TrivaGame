@@ -1,15 +1,23 @@
+h1{
+    text-align: center; 
+}
 .jumbotron{
     height: 700px; 
 }
-button{
-    padding: 200px; 
+.startBtn{
+    width: 500px;  
 }
 .btnContainer{
-    padding:200px; 
+    margin-top: 150px; 
+    margin-left: 150px; 
 }
 .quest{
     font-size: 20px; 
 }
 .timeRem{
     font-size: 20px; 
+}
+.questionInput{
+    font-size: 30px; 
+    display: inline; 
 }
