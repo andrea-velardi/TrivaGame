@@ -1,25 +1,39 @@
-//Global Variables
-var hiddenImage = false; 
-var qCounter = 0
-var time = 11;
+//Question and answer objects
+
 var questions = 
 {
     q1: ['Before the Foo Fighters, David Grohl was the lead drummer in which famous rock band?'],
-    q2: ['Name the English drummer that played in the band, The Who.'],  
+    q2: ['Name the English drummer that played in the band, The Who.'], 
+    q3: ['Name the band that released the song Stairway to Heaven in 1971.'],
+    q4: ['Which song below was not produced by the band, The Eagles?'],   
 };    
 var answers = 
 {
             answers1:[{1:'Pink Floyd',
-                    2:'Led Zeppelin',
-                    3:'Nirvana' //correct answer
-            }],
-            answers2:[{1:'Keith Moon',// correct answer
-                    2:'Slash',
-                    3:'Cartman'
-            }],  
-}
-var correctAnswers;
-var wrongAnswers;
+                        2:'Led Zeppelin',
+                        3:'Nirvana' //correct answer
+                    }],
+            answers2:[{ 1:'Keith Moon',// correct answer
+                        2:'Slash',
+                        3:'Cartman'
+                    }],  
+            answers3:[{ 1:'Led Zeppelin',// correct answer
+                        2:'Backstreet Boys',
+                        3:'The Beatles'
+                    }], 
+            answers4:[{ 1:'Eye of the Tiger',// correct answer
+                        2:'Desperado',
+                        3:'Hotel California'
+                    }]
+}; 
+//counter variables
+var isCorrect = false; 
+var questCnt = 0; 
+var time = 0; 
+var corAnswer = 0; 
+var wrongCount = 0; 
+
+// used to reset the time
 var interval;
 
 //Functions
@@ -37,8 +51,10 @@ function gamePlay()
 {
     $('.startBtn').on('click', function () //by clicking on the start button it calls the quest1 function and the timeCount function 
     {
-        //removes all buttons with the class startbtn
+        //hides the start button
         $('.startBtn').hide(); 
+        
+        //functions
         timeCount();
         quest1(); 
         chooseCheckAnswer(); 
@@ -46,7 +62,7 @@ function gamePlay()
 }
 function timeCount()
 {
-    time = 7; // did 11 so it would reflect 10 seconds on the DOM
+    time = 11; // 
     interval = setInterval(timeRemaining,1000); // one second internal
     //adds a new Div to btn container with the text " Time Remaining"
     $('.btnContainer').append('<div class="timeRem">' 
@@ -67,61 +83,205 @@ function timeRemaining()
     if(time === 0)
     {
         console.log('time = ' + time); 
-        //stops the time
+        //stops the time at 0....
         clearInterval(interval); 
         //remove button answers
         $('button').remove(); 
         //remove question
         $('.questionInput').remove(); 
-        //Displays the correct answer accordingly
-        disCorAnsw(); 
+        //Displays "time is up" if the time reaches 0
+        $('.btnContainer').append('<div class="timeIsUp">Time is up </div>'); 
+        dispAns(); 
     } 
 }
-function disCorAnsw()
-//display correct answer. counter 1 = question 1, counter 2 = question 2
+function dispAns()
+//=================================================================================================
+//First Question
 {
-    if(qCounter === 1)
+    if(questCnt === 1 && isCorrect === false)
     {
-    var newDiv = $('<div class="corAnsw">'); 
-    correctAnswer = newDiv.text('Time is up! ' +
-                                ' The correct answer is ' + answers.answers1[0][3]); 
+        //tracks the wrong answers
+        wrongCount++; 
+        var newDiv = $('<div class="corAnsw">'); 
+        correctAnswer = newDiv.text('WRONG! The correct answer is ' + answers.answers1[0][3]); 
         $('.btnContainer').append(correctAnswer); 
-        //Remove the correct answer after five seconds 
+        //Remove the correct answer after three seconds 
         //Removes the time remaining and then calls the time remaining function to start the timer again
         setTimeout(function()
             {
                 $('div').remove('.corAnsw');
                 $('div').remove('.timeRem'); 
+                $('div').remove('.timeIsUp'); 
+                //functions
                 timeCount(); 
                 quest2(); 
                 chooseCheckAnswer(); 
-            }, 4000); 
+            }, 3000); 
 
     }
+    else if(questCnt === 1 && isCorrect === true)
+    {
+        //tracks the right answers
+        answerCount++; 
+        //display correct!
+        var newDiv = $('<div class"corAnsw">'); 
+        correctAnswer = newDiv.text('CORRECT!'); 
+        $('.btnContainer').append(correctAnswer); 
+        //removes the correct answer after three seconds
+        //removes the time remaining then call the time remaining function to start the timer again
+        setTimeout(function()
+            {
+                isCorrect = false; 
+                $('div').remove('.corAnsw');
+                $('div').remove('.timeRem'); 
+                $('div').remove('.timeIsUp'); 
+                //functions
+                //reset time count
+                timeCount(); 
+                //create the second questions and answers
+                quest2(); 
+                chooseCheckAnswer(); 
+            }, 3000);     
+    }
+//=========================================================================================    
+//second question    
+    else if(questCnt === 2 && isCorrect === false)
+    {
+            //track the wrong answers
+            wrongCount++; 
+            var newDiv = $('div class="corAnsw">'); 
+            correctAnswer = newDiv.text(' The correct answer is ' + answers.answer3[0][1]); 
+            $('.btnContainer').append(correctAnswer); 
+
+            //removes the correct answer after five seconds
+            //removes the time time remaining then call the time remaining function to start the timer again
+        setTimeout(function()
+            {
+                $('div').remove('.corAnsw');
+                $('div').remove('.timeRem'); 
+                $('div').remove('.timeIsUp'); 
+                //functions
+                timeCount(); 
+                quest3(); 
+                chooseCheckAnswer(); 
+            }, 3000); 
+    }
+    else if(questCnt === 2 && isCorrect === true)
+    {
+            //tracks the right answers
+            answerCount++; 
+            //display correct!
+            var newDiv = $('<div class"corAnsw">'); 
+            correctAnswer = newDiv.text('CORRECT!'); 
+            $('.btnContainer').append(correctAnswer); 
+            //removes the correct answer after five seconds
+            //removes the time remaining then call the time remaining function to start the timer again
+        setTimeout(function()
+            {
+                $('div').remove('.corAnsw');
+                $('div').remove('.timeRem'); 
+                $('div').remove('.timeIsUp'); 
+                //functions
+                timeCount(); 
+                // quest3(); 
+                chooseCheckAnswer(); 
+            }, 3000);   
+    }
+//=========================================================================================    
+//third question   
+    else if(questCnt === 2 && isCorrect === false)
+    {
+        //track the wrong answers
+        wrongCount++; 
+        var newDiv = $('div class="corAnsw">'); 
+        correctAnswer = newDiv.text(' The correct answer is ' + answers.answer2[0][1]); 
+        $('.btnContainer').append(correctAnswer); 
+
+        //removes the correct answer after five seconds
+        //removes the time time remaining then call the time remaining function to start the timer again
+        setTimeout(function()
+        {
+            $('div').remove('.corAnsw');
+            $('div').remove('.timeRem'); 
+            $('div').remove('.timeIsUp'); 
+            //functions
+            timeCount(); 
+            quest3(); 
+            chooseCheckAnswer(); 
+        }, 3000); 
+    }
+    else if(questCnt === 2 && isCorrect === true)
+    {
+            //tracks the right answers
+            answerCount++; 
+            //display correct!
+            var newDiv = $('<div class"corAnsw">'); 
+            correctAnswer = newDiv.text('CORRECT!'); 
+            $('.btnContainer').append(correctAnswer); 
+            //removes the correct answer after five seconds
+            //removes the time remaining then call the time remaining function to start the timer again
+        setTimeout(function()
+        {
+            $('div').remove('.corAnsw');
+            $('div').remove('.timeRem'); 
+            $('div').remove('.timeIsUp'); 
+            //functions
+            timeCount(); 
+            quest3(); 
+            chooseCheckAnswer(); 
+        }, 3000);   
+    }
+    //test
+    console.log('question Counter = ' + questCnt); 
 }
 function quest1()
 {
-    qCounter++;
-    //adds question to the questionInput Div
-    $('.btnContainer').append('<div class="questionInput">' + questions.q1 + '</div>'); 
-    //add answers
-    $('.btnContainer').append('<button class="answerVal" value=0>' + answers.answers1[0][1] + '</button>');
-    //add answers
-    $('.btnContainer').append('<button class="answerVal" value=0>' + answers.answers1[0][2] + '</button>');
-    //add answers
-    $('.btnContainer').append('<button class="answerVal" value=1>' + answers.answers1[0][3] + '</button>');
-}
+    //adds 
+    //adds question to the questionInput Div && answers
+    questCnt++; 
+    $('.btnContainer').append('<div class="questionInput">' + questions.q1 + '</div>' + 
+        '<button class="answerVal" value=0>' + answers.answers1[0][1] + '</button>' +
+        '<button class="answerVal" value=0>' + answers.answers1[0][2] + '</button>' +
+        '<button class="answerVal" value=0>' + answers.answers1[0][3] + '</button>');
+    }
 function quest2()
 {
-    qCounter++;
-    //adds question to the questionInput Div
-    $('.btnContainer').append('<div class="questionInput">' + questions.q2 + '</div>'); 
-    //add answers
-    $('.btnContainer').append('<button class="answerVal" value=1>' + answers.answers2[0][1] + '</button>');
-    //add answers
-    $('.btnContainer').append('<button class="answerVal" value=0>' + answers.answers2[0][2] + '</button>');
-    //add answers
-    $('.btnContainer').append('<button class="answerVal" value=0>' + answers.answers2[0][3] + '</button>');
+    questCnt++; 
+    //adds question to the questionInput Div && answers
+    $('.btnContainer').append('<div class="questionInput">' + questions.q2 + '</div>' + 
+        '<button class="answerVal" value=0>' + answers.answers2[0][1] + '</button>' +
+        '<button class="answerVal" value=0>' + answers.answers2[0][2] + '</button>' +
+        '<button class="answerVal" value=0>' + answers.answers2[0][3] + '</button>');
+}
+function quest3()
+{
+    questCnt++; 
+    //adds question to the questionInput Div && answers
+    $('.btnContainer').append('<div class="questionInput">' + questions.q3 + '</div>' + 
+        '<button class="answerVal" value=0>' + answers.answers3[0][1] + '</button>' +
+        '<button class="answerVal" value=0>' + answers.answers3[0][2] + '</button>' +
+        '<button class="answerVal" value=0>' + answers.answers3[0][3] + '</button>');
+}
+function endGame()
+{
+    //add game over text
+    $('.btnContainer').append('<div class="gameOver">All done, here is how you did!</div>' +
+                            '<div class="gameOver">Correct: ' + answerCount +
+                            '</div>' + '<div class="gameOver">Wrong: ' + wrongCount + '</div>'); 
+    resetGame();                         
+}
+function resetGame()
+{
+    $('.btnContainer').append('<button class="reset">reset</button'); 
+    $('.reset').on('click', function(){
+        $('div').remove('.gameOver'); 
+        $('button').remove('.reset'); 
+            //reset counters
+            questCnt = 0; 
+            answerCount = 0; 
+            wrongCount = 0; 
+            isCorrect = false; 
+    }); 
 }
 function chooseCheckAnswer()
 {
@@ -133,7 +293,7 @@ function chooseCheckAnswer()
         //stops the time when the answer is selected
         clearInterval(interval); 
         //if the attribute value of the check answer is one
-        if(checkRightAnswer == 1)
+        if(checkRightAnswer == 0)
         {
             //test
             console.log('Correct'); 
