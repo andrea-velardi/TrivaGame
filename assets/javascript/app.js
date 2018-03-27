@@ -62,7 +62,7 @@ function gamePlay()
 }
 function timeCount()
 {
-    time = 11; // 
+    time = 6; // 
     interval = setInterval(timeRemaining,1000); // one second internal
     //adds a new Div to btn container with the text " Time Remaining"
     $('.btnContainer').append('<div class="timeRem">' 
@@ -103,7 +103,8 @@ function dispAns()
         //tracks the wrong answers
         wrongCount++; 
         var newDiv = $('<div class="corAnsw">'); 
-        correctAnswer = newDiv.text('WRONG! The correct answer is ' + answers.answers1[0][3]); 
+        correctAnswer = newDiv.text(' The correct answer is ' + answers.answers1[0][3]); 
+        console.log('test1'); 
         $('.btnContainer').append(correctAnswer); 
         //Remove the correct answer after three seconds 
         //Removes the time remaining and then calls the time remaining function to start the timer again
@@ -119,10 +120,11 @@ function dispAns()
             }, 3000); 
 
     }
-    else if(questCnt === 1 && isCorrect === true)
+    else if(questCnt === 1 && $('.answerVal3').val() === answers.answers1[0][3])
     {
         //tracks the right answers
         answerCount++; 
+        console.log('thisworks'); 
         //display correct!
         var newDiv = $('<div class"corAnsw">'); 
         correctAnswer = newDiv.text('CORRECT!'); 
@@ -149,15 +151,16 @@ function dispAns()
     {
             //track the wrong answers
             wrongCount++; 
-            var newDiv = $('div class="corAnsw">'); 
-            correctAnswer = newDiv.text(' The correct answer is ' + answers.answer3[0][1]); 
+            var newDiv2 = $('.answerMessage'); 
+            correctAnswer = newDiv2.text(' The correct answer is ' + answers.answers2[0][1]); 
+            console.log('test2'); 
             $('.btnContainer').append(correctAnswer); 
 
             //removes the correct answer after five seconds
             //removes the time time remaining then call the time remaining function to start the timer again
         setTimeout(function()
             {
-                $('div').remove('.corAnsw');
+                $('div').remove('.answerMessage');
                 $('div').remove('.timeRem'); 
                 $('div').remove('.timeIsUp'); 
                 //functions
@@ -188,13 +191,14 @@ function dispAns()
             }, 3000);   
     }
 //=========================================================================================    
-//third question   
-    else if(questCnt === 2 && isCorrect === false)
+//third question //  
+    else if(questCnt === 3 && isCorrect === false)
     {
         //track the wrong answers
         wrongCount++; 
-        var newDiv = $('div class="corAnsw">'); 
-        correctAnswer = newDiv.text(' The correct answer is ' + answers.answer2[0][1]); 
+        var newDiv = $('<div class="corAnsw">'); 
+        correctAnswer = newDiv.text(' The correct answer is ' + answers.answers3[0][1]); 
+        console.log('test3'); 
         $('.btnContainer').append(correctAnswer); 
 
         //removes the correct answer after five seconds
@@ -206,7 +210,7 @@ function dispAns()
             $('div').remove('.timeIsUp'); 
             //functions
             timeCount(); 
-            quest3(); 
+            quest4(); 
             chooseCheckAnswer(); 
         }, 3000); 
     }
@@ -240,9 +244,9 @@ function quest1()
     //adds question to the questionInput Div && answers
     questCnt++; 
     $('.btnContainer').append('<div class="questionInput">' + questions.q1 + '</div>' + 
-        '<button class="answerVal" value=0>' + answers.answers1[0][1] + '</button>' +
-        '<button class="answerVal" value=0>' + answers.answers1[0][2] + '</button>' +
-        '<button class="answerVal" value=0>' + answers.answers1[0][3] + '</button>');
+        '<button class="answerVal1" value=0>' + answers.answers1[0][1] + '</button>' +
+        '<button class="answerVal2" value=0>' + answers.answers1[0][2] + '</button>' +
+        '<button class="answerVal3" value=0>' + answers.answers1[0][3] + '</button>');
     }
 function quest2()
 {
@@ -261,6 +265,15 @@ function quest3()
         '<button class="answerVal" value=0>' + answers.answers3[0][1] + '</button>' +
         '<button class="answerVal" value=0>' + answers.answers3[0][2] + '</button>' +
         '<button class="answerVal" value=0>' + answers.answers3[0][3] + '</button>');
+}
+function quest4()
+{
+    questCnt++; 
+    //adds question to the questionInput Div && answers
+    $('.btnContainer').append('<div class="questionInput">' + questions.q4 + '</div>' + 
+        '<button class="answerVal" value=0>' + answers.answers4[0][1] + '</button>' +
+        '<button class="answerVal" value=0>' + answers.answers4[0][2] + '</button>' +
+        '<button class="answerVal" value=0>' + answers.answers4[0][3] + '</button>');
 }
 function endGame()
 {
@@ -307,6 +320,7 @@ function chooseCheckAnswer()
             $('button').remove(); 
             //removed question
             $('.questionInput').remove(); 
+            disCorAnsw();
         }
     }); 
 }
